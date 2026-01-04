@@ -13,7 +13,7 @@ const session = require("express-session");
 const MongoStore = require('connect-mongo');
 const flash = require("connect-flash");
 const passport = require("passport");
-const LocalStratagy = require("passport-local");
+const LocalStrategy = require("passport-local");
 const User = require("./models/user");
 
 const listingRouter = require("./routes/listing");
@@ -62,7 +62,7 @@ const sessionOptions = {
     }
 };
 
-store.on("error", () => {
+store.on("error", (err) => {
     console.log("ERROR in MONGO SESSION STORE", err);
 })
 
@@ -75,7 +75,7 @@ app.use(flash());
 
 app.use(passport.initialize());
 app.use(passport.session());
-passport.use(new LocalStratagy(User.authenticate()));
+passport.use(new LocalStrategy(User.authenticate()));
 
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
